@@ -39,7 +39,7 @@ if sys.argv[-1] == 'tag':
     os.system("git push --tags")
     sys.exit()
 
-readme = open('README.rst').read()
+readme = open('README.md').read()
 requirements = open('requirements.txt').readlines()
 
 setup(
@@ -47,6 +47,7 @@ setup(
     version=version,
     description='',
     long_description=readme,
+    long_description_content_type='text/markdown',
     author='Michael Sulyak',
     author_email='michael@sulyak.info',
     url='https://github.com/expert-m/django-simple-2fa',
