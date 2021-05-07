@@ -1,6 +1,5 @@
 import typing
-
-from attr import dataclass
+from dataclasses import dataclass
 from django.contrib.auth import authenticate, get_user_model
 from django.utils.functional import cached_property
 

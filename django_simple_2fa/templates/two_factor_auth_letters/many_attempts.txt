@@ -1,0 +1,2 @@
+Hi {{ user.username }},
+You have received an email, because someone with IP {{ ip }} is trying to login in your account.

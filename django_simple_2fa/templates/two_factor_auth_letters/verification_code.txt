@@ -1,0 +1,2 @@
+Hi {{ user.username }},
+You have received an email with verification code {{ verification_code }}. Please use the code we’ve provided to sign in.
