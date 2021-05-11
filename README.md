@@ -21,6 +21,7 @@ INSTALLED_APPS = [
 3. Add in `urls.py`:
 ```python3
 from django.contrib import admin
+from django_simple_2fa.admin import AdminSiteWith2FA
 
 admin.site.__class__ = AdminSiteWith2FA
 ```
