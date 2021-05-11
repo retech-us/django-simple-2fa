@@ -50,7 +50,7 @@ setup(
     long_description_content_type='text/markdown',
     author='Michael Sulyak',
     author_email='michael@sulyak.info',
-    url='https://github.com/expert-m/django-simple-2fa',
+    url='https://github.com/rebotics/django-simple-2fa',
     packages=[
         'django_simple_2fa',
     ],
@@ -68,5 +68,6 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ],
 )
