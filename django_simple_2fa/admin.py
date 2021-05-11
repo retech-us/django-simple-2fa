@@ -74,7 +74,7 @@ class AdminSiteWith2FA(AdminSite):
     use :meth:`has_permission` in order to secure those views.
     """
     login_form = AdminAuthenticationFormWith2FA
-    login_template = 'two_factor_auth_letters/admin_login.html'
+    login_template = 'two_factor_auth/admin_login.html'
 
     def login(self, request, *args, **kwargs):
         response = super().login(request, *args, **kwargs)

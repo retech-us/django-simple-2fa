@@ -97,7 +97,7 @@ class UserAuthSecurity:
             return
 
         message = loader.render_to_string(
-            'two_factor_auth_letters/many_attempts.txt',
+            'two_factor_auth/many_attempts.txt',
             context=context,
         )
 
