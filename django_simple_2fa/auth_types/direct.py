@@ -1,3 +1,5 @@
+import typing
+
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
@@ -5,11 +7,12 @@ from .base import BaseTwoFactorAuthType
 from ..dto import TwoFactorAuthObtainResult
 
 
+if typing.TYPE_CHECKING:
+    UserModel = get_user_model()
+
 __all__ = (
     'DirectTwoFactorAuthType',
 )
-
-UserModel = get_user_model()
 
 
 class DirectTwoFactorAuthType(BaseTwoFactorAuthType):
@@ -17,18 +20,18 @@ class DirectTwoFactorAuthType(BaseTwoFactorAuthType):
     type = 'direct'
 
     @classmethod
-    def obtain(cls, *, user: UserModel) -> TwoFactorAuthObtainResult:
+    def obtain(cls, *, user: 'UserModel') -> TwoFactorAuthObtainResult:
         return TwoFactorAuthObtainResult(
             message=_('You do not need to use 2FA.'),
             verification_code='',
         )
 
     @classmethod
-    def reset(cls, *, user: UserModel) -> None:
+    def reset(cls, *, user: 'UserModel') -> None:
         pass
 
     @classmethod
     def is_valid(cls, *,
-                 user: UserModel,
+                 user: 'UserModel',
                  verification_code: str) -> bool:
         return True

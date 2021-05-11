@@ -17,7 +17,8 @@ from .settings import app_settings
 from .throttling import RateThrottle, RateThrottleCondition
 
 
-UserModel = get_user_model()
+if typing.TYPE_CHECKING:
+    UserModel = get_user_model()
 
 
 def get_ip_from_request(request: HttpRequest) -> str:
@@ -49,12 +50,14 @@ def get_ip_from_request(request: HttpRequest) -> str:
 
 class UserAuthSecurity:
     username: str
-    user: UserModel
+    user: 'UserModel'
     _rate_throttle: RateThrottle
 
     # _failed_attempts_to_reset_password: int = 1_000
 
     def __init__(self, username: str) -> None:
+        UserModel = get_user_model()
+
         self.username = username
         self.user = UserModel.objects.filter(username=self.username).first()
         self._rate_throttle = RateThrottle(
@@ -126,11 +129,11 @@ class UserAuthSecurity:
 
 
 class UserDeviceManager:
-    user: UserModel
+    user: 'UserModel'
     _device_ttl = datetime.timedelta(weeks=4)
     _cache_key_tpl = 'used-device:{user_id}:{device_id}'
 
-    def __init__(self, user: UserModel) -> None:
+    def __init__(self, user: 'UserModel') -> None:
         self.user = user
 
     def add_device(self, device_id: str) -> None:
@@ -143,7 +146,7 @@ class UserDeviceManager:
 
 
 def get_two_factor_auth_type(*,
-                             user: UserModel,
+                             user: 'UserModel',
                              device_id: typing.Optional[str] = None) -> typing.Type[BaseTwoFactorAuthType]:
     user_device_manager = UserDeviceManager(user)
 

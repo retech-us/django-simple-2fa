@@ -1,5 +1,6 @@
 import typing
 from dataclasses import dataclass
+
 from django.contrib.auth import authenticate, get_user_model
 from django.utils.functional import cached_property
 
@@ -8,6 +9,7 @@ from .throttling import ThrottleStatus
 
 if typing.TYPE_CHECKING:
     from .auth_types.base import BaseTwoFactorAuthType
+    UserModel = get_user_model()
 
 __all__ = (
     'TwoFactorAuthObtainResult',
@@ -15,8 +17,6 @@ __all__ = (
     'TwoFactorAuthStatus',
     'TwoFactorRequester',
 )
-
-UserModel = get_user_model()
 
 
 @dataclass
@@ -34,7 +34,7 @@ class TwoFactorAuthStatus:
 
 @dataclass
 class TwoFactorAuthVerifyResult:
-    user: UserModel
+    user: 'UserModel'
     throttle_status: ThrottleStatus
 
 
@@ -46,7 +46,7 @@ class TwoFactorRequester:
     device_id: typing.Optional[str] = None
 
     @cached_property
-    def user(self) -> typing.Optional[UserModel]:
+    def user(self) -> typing.Optional['UserModel']:
         return authenticate(username=self.username, password=self.password)
 
     @cached_property

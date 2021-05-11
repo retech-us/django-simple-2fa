@@ -1,5 +1,6 @@
 import datetime
 import random
+import typing
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -13,11 +14,12 @@ from ..dto import TwoFactorAuthObtainResult
 from ..errors import TwoFactorAuthError
 
 
+if typing.TYPE_CHECKING:
+    UserModel = get_user_model()
+
 __all__ = (
     'EmailTwoFactorAuthType',
 )
-
-UserModel = get_user_model()
 
 
 class EmailTwoFactorAuthType(BaseTwoFactorAuthType):
@@ -26,7 +28,7 @@ class EmailTwoFactorAuthType(BaseTwoFactorAuthType):
     _code_ttl = datetime.timedelta(days=1)
 
     @classmethod
-    def obtain(cls, *, user: UserModel) -> TwoFactorAuthObtainResult:
+    def obtain(cls, *, user: 'UserModel') -> TwoFactorAuthObtainResult:
         from ..utils import get_encoded_email
 
         if not user.email:
@@ -51,13 +53,13 @@ class EmailTwoFactorAuthType(BaseTwoFactorAuthType):
         )
 
     @classmethod
-    def reset(cls, *, user: UserModel) -> None:
+    def reset(cls, *, user: 'UserModel') -> None:
         cache_key = cls._get_cache_key(user)
         cache.delete(cache_key)
 
     @classmethod
     def is_valid(cls, *,
-                 user: UserModel,
+                 user: 'UserModel',
                  verification_code: str) -> bool:
         cache_key = cls._get_cache_key(user)
         saved_code = cache.get(cache_key)
@@ -85,7 +87,7 @@ class EmailTwoFactorAuthType(BaseTwoFactorAuthType):
 
     @staticmethod
     def get_context_for_letter(*,
-                               user: UserModel,
+                               user: 'UserModel',
                                verification_code: str) -> dict:
         return {
             'user': user,
@@ -93,7 +95,7 @@ class EmailTwoFactorAuthType(BaseTwoFactorAuthType):
         }
 
     @staticmethod
-    def _get_cache_key(user: UserModel) -> str:
+    def _get_cache_key(user: 'UserModel') -> str:
         return f'2fa:email:{user.id}'
 
     @staticmethod
