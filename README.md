@@ -4,17 +4,29 @@
 
 1. Install the package:
 ```bash
-pip install django-two-factor-auth
+pip install -e git+https://github.com/rebotics/django-simple-2fa.git#egg=django-simple-2fa
 ```
 
-2. Add in `urls.py`:
+
+2. Add in INSTALLED_APPS:
+```python3
+INSTALLED_APPS = [
+    ...
+    'django_simple_2fa',
+    ...
+]
+```
+
+
+3. Add in `urls.py`:
 ```python3
 from django.contrib import admin
 
 admin.site.__class__ = AdminSiteWith2FA
 ```
 
-3. Add settings (an example):
+
+4. Add settings (an example):
 ```python3
 DJANGO_SIMPLE_2FA = {
     'IS_ENABLED': 'utils.two_factor_auth.two_factor_auth_is_enabled',

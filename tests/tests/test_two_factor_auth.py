@@ -7,9 +7,12 @@ from django.core.mail import EmailMultiAlternatives
 from django.http import HttpRequest
 from rest_framework.test import APITestCase
 
+from django_simple_2fa.auth_types import DirectTwoFactorAuthType
+from django_simple_2fa.base import TwoFactorAuth
+from django_simple_2fa.dto import TwoFactorRequester
+from django_simple_2fa.errors import TwoFactorAuthError
 from django_simple_2fa.settings import app_settings
-from .. import TwoFactorAuth, TwoFactorAuthError, TwoFactorRequester
-from ..auth_types import DirectTwoFactorAuthType
+
 
 UserModel = get_user_model()
 

@@ -74,7 +74,7 @@ class EmailTwoFactorAuthType(BaseTwoFactorAuthType):
     @staticmethod
     def send_letter(context: dict) -> None:
         message = loader.render_to_string(
-            'two_factor_auth/verification_code.txt',
+            'two_factor_auth/letters/verification_code.txt',
             context=context,
         )
 

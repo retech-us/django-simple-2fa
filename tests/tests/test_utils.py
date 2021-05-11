@@ -1,16 +1,10 @@
-import uuid
-from unittest import mock
 import datetime
+
 from django.contrib.auth import get_user_model
-from django.core.cache import cache
-from django.core.mail import EmailMultiAlternatives
-from django.http import HttpRequest
-from django_simple_2fa.utils import convert_seconds_to_str, get_encoded_email
 from rest_framework.test import APITestCase
 
-from django_simple_2fa.settings import app_settings
-from .. import TwoFactorAuth, TwoFactorAuthError, TwoFactorRequester
-from ..auth_types import DirectTwoFactorAuthType
+from django_simple_2fa.utils import convert_seconds_to_str, get_encoded_email
+
 
 UserModel = get_user_model()
 
@@ -67,5 +61,3 @@ class TwoFactorAuthView(APITestCase):
 
         for param, expected_value in zip(params, expected_values_for_round):
             self.assertEqual(convert_seconds_to_str(int(param), round_time=True), expected_value)
-
-
