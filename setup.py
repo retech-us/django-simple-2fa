@@ -4,7 +4,7 @@ import os
 import re
 import sys
 
-from setuptools import setup
+from setuptools import find_packages, setup
 
 
 def get_version(*file_paths):
@@ -51,9 +51,7 @@ setup(
     author='Michael Sulyak',
     author_email='michael@sulyak.info',
     url='https://github.com/rebotics/django-simple-2fa',
-    packages=[
-        'django_simple_2fa',
-    ],
+    packages=find_packages(exclude=['*.tests', '*.tests.*', 'tests.*', 'tests']),
     include_package_data=True,
     install_requires=requirements,
     license='MIT',
