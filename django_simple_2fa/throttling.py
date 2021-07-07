@@ -46,6 +46,10 @@ class ThrottleStatus:
     def is_spent_all_attempts(self) -> bool:
         return self.num_attempts >= self.condition.max_attempts
 
+    @property
+    def remaining_attempts(self) -> int:
+        return self.condition.max_attempts - self.num_attempts
+
 
 class RateThrottle:
     cache = cache
