@@ -2,7 +2,7 @@ import typing
 
 from django.utils.translation import gettext_lazy as _
 
-from . import utils
+from . import constants, utils
 from .auth_types import DirectTwoFactorAuthType
 from .dto import TwoFactorAuthObtainResult, TwoFactorAuthStatus, TwoFactorAuthVerifyResult, TwoFactorRequester
 from .errors import TwoFactorAuthError
@@ -112,9 +112,23 @@ class TwoFactorAuth:
                 self._user_auth_security.add_failed_login_attempt(self.requester.ip)
                 throttle_status = self._rate_throttle_for_auth.increase_attempts(self._requester_ident)
 
-            raise TwoFactorAuthError(
-                _('No active account found with the given credentials.'),
-                throttle_status=throttle_status,
-            )
+            if throttle_status.num_attempts < 2:
+                raise TwoFactorAuthError(
+                    ACCOUNT_ERROR_MSG,
+                    throttle_status=throttle_status,
+                )
+
+            elif throttle_status.num_attempts < 3:
+                raise TwoFactorAuthError(
+                    f'{constants.ACCOUNT_ERROR_MSG} {constants.LAST_ATTEMPT_MSG}',
+                    throttle_status=throttle_status,
+                )
+
+            else:
+                raise TwoFactorAuthError(
+                    f'{constants.ACCOUNT_ERROR_MSG}'
+                    f' {constants.ACCOUNT_LOCKED_MSG.format(waiting_time=throttle_status.str_waiting_time)}',
+                    throttle_status=throttle_status,
+                )
 
         return throttle_status
