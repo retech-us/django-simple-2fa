@@ -117,7 +117,7 @@ class TwoFactorAuth:
             if throttle_status.is_spent_all_attempts:
                 error_msg += f' {constants.ACCOUNT_LOCKED_MSG.format(waiting_time=throttle_status.str_waiting_time)}'
 
-            elif throttle_status.remaining_attempts == 1:
+            if throttle_status.remaining_attempts == 1:
                 error_msg += f' {constants.LAST_ATTEMPT_MSG}'
 
             raise TwoFactorAuthError(
