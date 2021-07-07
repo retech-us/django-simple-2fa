@@ -112,23 +112,16 @@ class TwoFactorAuth:
                 self._user_auth_security.add_failed_login_attempt(self.requester.ip)
                 throttle_status = self._rate_throttle_for_auth.increase_attempts(self._requester_ident)
 
+            error_msg = constants.ACCOUNT_ERROR_MSG
             if throttle_status.is_spent_all_attempts:
-                error_msg = (f'{constants.ACCOUNT_ERROR_MSG}'
-                             f' {constants.ACCOUNT_LOCKED_MSG.format(waiting_time=throttle_status.str_waiting_time)}')
+                error_msg += f' {constants.ACCOUNT_LOCKED_MSG.format(waiting_time=throttle_status.str_waiting_time)}'
                 raise TwoFactorAuthError(
                     error_msg,
                     throttle_status=throttle_status,
                 )
 
             elif throttle_status.remaining_attempts == 1:
-                error_msg = f'{constants.ACCOUNT_ERROR_MSG} {constants.LAST_ATTEMPT_MSG}'
-                raise TwoFactorAuthError(
-                    error_msg,
-                    throttle_status=throttle_status,
-                )
-
-            else:
-                error_msg = constants.ACCOUNT_ERROR_MSG
+                error_msg += f' {constants.LAST_ATTEMPT_MSG}'
                 raise TwoFactorAuthError(
                     error_msg,
                     throttle_status=throttle_status,
