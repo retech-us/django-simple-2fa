@@ -44,10 +44,13 @@ class ThrottleStatus:
 
     @property
     def is_spent_all_attempts(self) -> bool:
-        return self.num_attempts >= self.condition.max_attempts
+        return not self.remaining_attempts
 
     @property
     def remaining_attempts(self) -> int:
+        if self.num_attempts > self.condition.max_attempts:
+            return 0
+
         return self.condition.max_attempts - self.num_attempts
 
 
