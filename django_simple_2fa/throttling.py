@@ -13,6 +13,11 @@ class RateThrottleCondition:
     max_attempts: int
     duration: datetime.timedelta
 
+    @property
+    def str_duration(self):
+        from .utils import convert_seconds_to_str
+        return convert_seconds_to_str(int(self.duration.total_seconds()), round_time=True)
+
 
 @dataclass
 class ThrottleStatus:
@@ -41,11 +46,6 @@ class ThrottleStatus:
     def str_waiting_time(self) -> str:
         from .utils import convert_seconds_to_str
         return convert_seconds_to_str(self.waiting_time, round_time=True)
-
-    @property
-    def str_blocking_time(self) -> str:
-        from .utils import convert_seconds_to_str
-        return convert_seconds_to_str(self.condition.duration.total_seconds(), round_time=True)
 
     @property
     def is_spent_all_attempts(self) -> bool:
