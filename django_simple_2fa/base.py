@@ -118,8 +118,7 @@ class TwoFactorAuth:
                 error_msg += f' {constants.ACCOUNT_LOCKED_MSG.format(waiting_time=throttle_status.str_waiting_time)}'
 
             if throttle_status.remaining_attempts == 1:
-                blocking_time = throttle_status.condition.str_duration
-                error_msg += f' {constants.LAST_ATTEMPT_MSG.format(blocking_time=blocking_time)}'
+                error_msg += f' {constants.LAST_ATTEMPT_MSG.format(locking_time=throttle_status.str_locking_time)}'
 
             raise TwoFactorAuthError(
                 error_msg,
