@@ -43,6 +43,11 @@ class ThrottleStatus:
         return convert_seconds_to_str(self.waiting_time, round_time=True)
 
     @property
+    def str_blocking_time(self) -> str:
+        from .utils import convert_seconds_to_str
+        return convert_seconds_to_str(self.condition.duration.total_seconds(), round_time=True)
+
+    @property
     def is_spent_all_attempts(self) -> bool:
         return not self.remaining_attempts
 
