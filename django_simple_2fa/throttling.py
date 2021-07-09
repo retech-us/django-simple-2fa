@@ -26,10 +26,7 @@ class ThrottleStatus:
         return len(self.history)
 
     @property
-    def waiting_time(self) -> int:
-        if not self.is_spent_all_attempts:
-            return 0
-
+    def locking_time(self) -> int:
         diff = int(self.timestamp - self.history[-1])
 
         if diff >= self.condition.duration.total_seconds():
@@ -38,13 +35,32 @@ class ThrottleStatus:
         return int(self.condition.duration.total_seconds() - diff)
 
     @property
+    def waiting_time(self) -> int:
+        if not self.is_spent_all_attempts:
+            return 0
+
+        return self.locking_time
+
+    @property
+    def str_locking_time(self) -> str:
+        from .utils import convert_seconds_to_str
+        return convert_seconds_to_str(self.locking_time, round_time=True)
+
+    @property
     def str_waiting_time(self) -> str:
         from .utils import convert_seconds_to_str
         return convert_seconds_to_str(self.waiting_time, round_time=True)
 
     @property
     def is_spent_all_attempts(self) -> bool:
-        return self.num_attempts >= self.condition.max_attempts
+        return not self.remaining_attempts
+
+    @property
+    def remaining_attempts(self) -> int:
+        if self.num_attempts > self.condition.max_attempts:
+            return 0
+
+        return self.condition.max_attempts - self.num_attempts
 
 
 class RateThrottle:

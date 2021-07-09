@@ -2,6 +2,7 @@ import typing
 
 from django.utils.translation import gettext_lazy as _
 
+from . import constants
 from .throttling import ThrottleStatus
 
 
@@ -21,10 +22,7 @@ class TwoFactorAuthError(Exception):
         self.reason = reason
 
         if throttle_status and not throttle_status.is_allowed and not self.reason:
-            self.reason = _(
-                'We\'ve locked you because of too many login attempts. '
-                'Try again in {waiting_time}.'
-            ).format(
+            self.reason = constants.ACCOUNT_LOCKED_MSG.format(
                 waiting_time=throttle_status.str_waiting_time,
             )
 
