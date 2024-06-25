@@ -38,6 +38,7 @@ class TwoFactorAuthView(APITestCase):
             password=self.password,
             device_id=self.device_id,
             ip='127.0.0.1',
+            request=self.request,
         )).get_status()
 
         self.assertIn(result.two_factor_type.type, 'email')
@@ -54,6 +55,7 @@ class TwoFactorAuthView(APITestCase):
                     password=self.password,
                     device_id=self.device_id,
                     ip='127.0.0.1',
+                    request=self.request,
                 )).get_status()
 
         TwoFactorAuth(TwoFactorRequester(
@@ -61,6 +63,7 @@ class TwoFactorAuthView(APITestCase):
             password=self.password,
             device_id=self.device_id,
             ip='127.0.0.1',
+            request=self.request,
         )).get_status()
 
     @mock.patch.object(app_settings, attribute='IS_ENABLED', new=lambda: False)
@@ -73,6 +76,7 @@ class TwoFactorAuthView(APITestCase):
             password=self.password,
             device_id=self.device_id,
             ip='127.0.0.1',
+            request=self.request,
         )).get_status()
 
         self.assertIn(result.two_factor_type.type, DirectTwoFactorAuthType.type)
@@ -104,6 +108,7 @@ class TwoFactorAuthView(APITestCase):
                 password=self.password,
                 device_id=self.device_id,
                 ip='127.0.0.1',
+                request=self.request,
             )).obtain()
 
         self.assertTrue(mocked_send_mail.called)
@@ -121,6 +126,7 @@ class TwoFactorAuthView(APITestCase):
                     password=str(uuid.uuid4()),
                     device_id=self.device_id,
                     ip='127.0.0.1',
+                    request=self.request,
                 )).obtain()
 
         with self.assertRaises(expected_exception=TwoFactorAuthError):
@@ -129,6 +135,7 @@ class TwoFactorAuthView(APITestCase):
                 password=self.password,
                 device_id=self.device_id,
                 ip='127.0.0.1',
+                request=self.request,
             )).obtain()
 
     @mock.patch.object(app_settings, attribute='IS_ENABLED', new=lambda: True)
@@ -148,6 +155,7 @@ class TwoFactorAuthView(APITestCase):
                 password=self.password,
                 device_id=self.device_id,
                 ip='127.0.0.1',
+                request=self.request,
             )).obtain()
 
         phrase = 'verification code '
@@ -159,6 +167,7 @@ class TwoFactorAuthView(APITestCase):
             password=self.password,
             device_id=self.device_id,
             ip='127.0.0.1',
+            request=self.request,
         )).verify(verification_code)
 
         self.assertEqual(response.user, self.user)
@@ -173,6 +182,7 @@ class TwoFactorAuthView(APITestCase):
             password=self.password,
             device_id=self.device_id,
             ip='127.0.0.1',
+            request=self.request,
         )).verify('')
 
         self.assertEqual(response.user, self.user)
