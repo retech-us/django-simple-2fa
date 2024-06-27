@@ -2,6 +2,7 @@ import typing
 from dataclasses import dataclass
 
 from django.contrib.auth import authenticate, get_user_model
+from django.http import HttpRequest
 from django.utils.functional import cached_property
 
 from .throttling import ThrottleStatus
@@ -44,10 +45,15 @@ class TwoFactorRequester:
     password: str
     ip: str
     device_id: typing.Optional[str] = None
+    request: typing.Optional[HttpRequest] = None
 
     @cached_property
     def user(self) -> typing.Optional['UserModel']:
-        return authenticate(username=self.username, password=self.password)
+        return authenticate(
+            request=self.request,
+            username=self.username,
+            password=self.password
+        )
 
     @cached_property
     def two_factor_auth_type(self) -> typing.Optional[typing.Type['BaseTwoFactorAuthType']]:

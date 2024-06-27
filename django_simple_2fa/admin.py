@@ -40,6 +40,7 @@ class AdminAuthenticationFormWith2FA(AdminAuthenticationForm):
             password=self.cleaned_data.get('password'),
             device_id=self.request.COOKIES.get('device_id', str(uuid.uuid4())),
             ip=get_ip_from_request(self.request),
+            request=self.request
         )
 
         two_factor_auth_service = TwoFactorAuth(requester)
