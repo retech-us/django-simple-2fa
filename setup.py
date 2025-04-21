@@ -57,7 +57,7 @@ setup(
     zip_safe=False,
     keywords='django-simple-2fa',
     classifiers=[
-        'Development Status :: 3',
+        'Development Status :: 3 - Alpha',
         'Framework :: Django :: 5',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
