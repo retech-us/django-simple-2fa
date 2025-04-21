@@ -24,7 +24,6 @@ if sys.argv[-1] == 'publish':
     try:
         import wheel
 
-
         print('Wheel version: ', wheel.__version__)
     except ImportError:
         print('Wheel library missing. Please run "pip install wheel"')
@@ -58,14 +57,15 @@ setup(
     zip_safe=False,
     keywords='django-simple-2fa',
     classifiers=[
-        'Development Status :: 3 - Alpha',
-        'Framework :: Django :: 3',
+        'Development Status :: 3',
+        'Framework :: Django :: 5',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
     ],
 )
